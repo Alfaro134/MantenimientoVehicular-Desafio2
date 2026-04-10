@@ -27,3 +27,22 @@ Sigue estos pasos para ejecutar el proyecto localmente en tu emulador o disposit
    ```bash
    git clone [https://github.com/Alfaro134/MantenimientoVehicular-Desafio2.git](https://github.com/Alfaro134/MantenimientoVehicular-Desafio2.git)
    cd MantenimientoVehicular-Desafio2
+   
+##  Equipo de Desarrollo (G01L)
+
+| Nombre del Estudiante | Carnet | Responsabilidad Principal |
+| :--- | :--- | :--- |
+| **Josué Alfaro** | AT202XXXX | Lógica de Persistencia y Dashboard |
+| **[Nombre de tu pareja]** | [Carnet] | Formulario de Registro y UI Components |
+
+##  Entorno de Desarrollo
+
+Para garantizar la estabilidad, este proyecto se ha desarrollado bajo las siguientes especificaciones:
+
+* **Dispositivo de Prueba:** Android Emulator (API 33) / Expo Go.
+* **Hardware:** Dell Inspiron 15 (12th Gen Intel Core i5, 16GB RAM).
+* **OS:** Windows 11.
+* **IDE:** Visual Studio Code.
+
+---
+© 2026 - Universidad Don Bosco
