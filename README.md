@@ -32,8 +32,8 @@ Sigue estos pasos para ejecutar el proyecto localmente en tu emulador o disposit
 
 | Nombre del Estudiante | Carnet | Responsabilidad Principal |
 | :--- | :--- | :--- |
-| **Josué Alfaro** | AT202XXXX | Lógica de Persistencia y Dashboard |
-| **[Nombre de tu pareja]** | [Carnet] | Formulario de Registro y UI Components |
+| **Josué Engelberto Alfaro Trinidad** | AT251699| Lógica de Persistencia y Dashboard |
+| **Fernando Alexander Juarez Coto** | [JC252637] | Formulario de Registro y UI Components |
 
 ##  Entorno de Desarrollo
 
