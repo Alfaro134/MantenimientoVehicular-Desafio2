@@ -7,7 +7,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { v4 as uuidv4 } from 'uuid';
 import { SkiaMeshBackground } from './src/components/SkiaMeshBackground';
 import { DetailModal } from './src/components/DetailModal';
-import { MainListScreen } from './src/screens/MainListScreen';
+import { BottomTabNavigator } from './src/components/BottomTabNavigator';
+import { HomeScreen } from './src/screens/HomeScreen';
+import { StatisticsScreen } from './src/screens/StatisticsScreen';
+import { ProfileScreen } from './src/screens/ProfileScreen';
 import { RegisterScreen } from './src/screens/RegisterScreen';
 import { sortPartsByDate } from './src/utils/dates';
 
@@ -15,6 +18,7 @@ const STORAGE_KEY = '@piezas_premium_parts_v1';
 
 export default function App() {
   const [screen, setScreen] = useState('list');
+  const [activeTab, setActiveTab] = useState('home');
   const [parts, setParts] = useState([]);
   const [hydrated, setHydrated] = useState(false);
   const [detailPart, setDetailPart] = useState(null);
@@ -70,6 +74,42 @@ export default function App() {
     setDetailPart(null);
   };
 
+  const renderScreen = () => {
+    if (screen === 'register') {
+      return (
+        <RegisterScreen
+          onSave={handleSavePart}
+          onCancel={() => setScreen('list')}
+        />
+      );
+    }
+
+    switch (activeTab) {
+      case 'home':
+        return (
+          <HomeScreen
+            sortedParts={sortedParts}
+            onAddPress={() => setScreen('register')}
+            onOpenDetail={openDetail}
+            onDelete={handleDelete}
+          />
+        );
+      case 'statistics':
+        return <StatisticsScreen />;
+      case 'profile':
+        return <ProfileScreen />;
+      default:
+        return (
+          <HomeScreen
+            sortedParts={sortedParts}
+            onAddPress={() => setScreen('register')}
+            onOpenDetail={openDetail}
+            onDelete={handleDelete}
+          />
+        );
+    }
+  };
+
   return (
     <GestureHandlerRootView style={styles.flex}>
       <SafeAreaProvider>
@@ -77,20 +117,14 @@ export default function App() {
           <StatusBar barStyle="light-content" backgroundColor="#000000" />
           <SkiaMeshBackground />
           <View style={styles.layer} pointerEvents="box-none">
-            {screen === 'list' ? (
-              <MainListScreen
-                sortedParts={sortedParts}
-                onAddPress={() => setScreen('register')}
-                onOpenDetail={openDetail}
-                onDelete={handleDelete}
-              />
-            ) : (
-              <RegisterScreen
-                onSave={handleSavePart}
-                onCancel={() => setScreen('list')}
-              />
-            )}
+            {renderScreen()}
           </View>
+          {screen !== 'register' && (
+            <BottomTabNavigator
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+            />
+          )}
           <DetailModal visible={detailOpen} part={detailPart} onClose={closeDetail} />
         </View>
       </SafeAreaProvider>
