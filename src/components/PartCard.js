@@ -13,6 +13,7 @@ export function PartCard({
   fechaCambio,
   onOpenDetail,
   onDelete,
+  onEdit,
 }) {
   const stagger = Math.min(index, 12) * 72;
 
@@ -88,24 +89,42 @@ export function PartCard({
               />
               <Text style={styles.dateText}>{fechaCambio || "—"}</Text>
             </View>
-            <Pressable
-              onPress={onDelete}
-              style={({ pressed }) => [
-                styles.deleteBtn,
-                pressed && styles.deleteBtnPressed,
-              ]}
-              accessibilityRole="button"
-              accessibilityLabel="Eliminar pieza"
-            >
-              <Ionicons
-                name="trash-outline"
-                size={14}
-                color={colors.danger}
-                style={{ marginRight: 4 }}
-              />
-              {/* Icono basura */}
-              <Text style={styles.deleteText}>Eliminar</Text>
-            </Pressable>
+            <View style={styles.actionButtons}>
+              <Pressable
+                onPress={onEdit}
+                style={({ pressed }) => [
+                  styles.editBtn,
+                  pressed && styles.editBtnPressed,
+                ]}
+                accessibilityRole="button"
+                accessibilityLabel="Editar pieza"
+              >
+                <Ionicons
+                  name="create-outline"
+                  size={14}
+                  color={colors.textPrimary}
+                  style={{ marginRight: 4 }}
+                />
+                <Text style={styles.editText}>Editar</Text>
+              </Pressable>
+              <Pressable
+                onPress={onDelete}
+                style={({ pressed }) => [
+                  styles.deleteBtn,
+                  pressed && styles.deleteBtnPressed,
+                ]}
+                accessibilityRole="button"
+                accessibilityLabel="Eliminar pieza"
+              >
+                <Ionicons
+                  name="trash-outline"
+                  size={14}
+                  color={colors.danger}
+                  style={{ marginRight: 4 }}
+                />
+                <Text style={styles.deleteText}>Eliminar</Text>
+              </Pressable>
+            </View>
           </View>
         </View>
       </BlurView>
@@ -227,6 +246,28 @@ const styles = StyleSheet.create({
   },
   deleteText: {
     color: colors.danger,
+    fontSize: 12,
+    fontWeight: "700",
+  },
+  actionButtons: {
+    flexDirection: "row",
+    gap: 8,
+  },
+  editBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    backgroundColor: "rgba(0, 206, 209, 0.12)",
+    borderWidth: 1,
+    borderColor: "rgba(0, 206, 209, 0.25)",
+  },
+  editBtnPressed: {
+    backgroundColor: "rgba(0, 206, 209, 0.25)",
+  },
+  editText: {
+    color: "#00ced1",
     fontSize: 12,
     fontWeight: "700",
   },

@@ -24,27 +24,52 @@ const field = (label, props) => (
   </View>
 );
 
-export function RegisterScreen({ onSave, onCancel }) {
+export function RegisterScreen({ onSave, onCancel, editingPart = null, existingParts = [] }) {
   const insets = useSafeAreaInsets();
-  const [pieza, setPieza] = useState("");
-  const [marca, setMarca] = useState("");
-  const [serie, setSerie] = useState("");
-  const [precio, setPrecio] = useState("");
-  const [fechaCambio, setFechaCambio] = useState("");
+  const [pieza, setPieza] = useState(editingPart?.pieza || "");
+  const [marca, setMarca] = useState(editingPart?.marca || "");
+  const [serie, setSerie] = useState(editingPart?.serie || "");
+  const [precio, setPrecio] = useState(editingPart?.precio || "");
+  const [fechaCambio, setFechaCambio] = useState(editingPart?.fechaCambio || "");
 
   const handleSave = () => {
-    //Validación simple para asegurar que el precio sea número
-    if (!pieza || !precio) {
-      alert("Por favor ingresa al menos la pieza y el precio.");
+    // Validar que todos los campos estén completos
+    if (!pieza.trim() || !marca.trim() || !serie.trim() || !precio.trim()) {
+      alert("Todos los campos son obligatorios.");
       return;
     }
+
+    // Validar que el número de serie sea solo números
+    if (!/^\d+$/.test(serie.trim())) {
+      alert("El número de serie debe contener solo números.");
+      return;
+    }
+
+    // Validar que el número de serie no se repita (excepto si es el mismo en modo edición)
+    const serieExists = existingParts.some(part => 
+      part.serie === serie.trim() && part.id !== editingPart?.id
+    );
+    if (serieExists) {
+      alert("El número de serie ya existe. Por favor ingrese uno diferente.");
+      return;
+    }
+
+    // Validar que el precio sea un número válido
+    if (isNaN(parseFloat(precio.trim())) || parseFloat(precio.trim()) <= 0) {
+      alert("El precio debe ser un número válido mayor a 0.");
+      return;
+    }
+
+    // Establecer fecha automática (formato YYYY-MM-DD)
+    const today = new Date();
+    const fechaAutomatica = today.toISOString().split('T')[0];
 
     onSave({
       pieza: pieza.trim(),
       marca: marca.trim(),
       serie: serie.trim(),
       precio: precio.trim(),
-      fechaCambio: fechaCambio.trim(),
+      fechaCambio: fechaAutomatica,
     });
   };
 
@@ -62,8 +87,7 @@ export function RegisterScreen({ onSave, onCancel }) {
           { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 12 },
         ]}
       >
-        <Text style={styles.header}>Nueva Pieza</Text>{" "}
-        {/* Título más corto estilo Dashboard */}
+        <Text style={styles.header}>{editingPart ? "Editar Pieza" : "Nueva Pieza"}</Text>
         <ScrollView
           style={styles.formScrollView}
           keyboardShouldPersistTaps="handled"
@@ -88,8 +112,9 @@ export function RegisterScreen({ onSave, onCancel }) {
             style: styles.input,
             value: serie,
             onChangeText: setSerie,
-            placeholder: "Número de serie",
+            placeholder: "Número de serie (solo números)",
             autoCapitalize: "characters",
+            keyboardType: "numeric",
           })}
           {field("Precio ($)", {
             style: styles.input,
@@ -101,9 +126,9 @@ export function RegisterScreen({ onSave, onCancel }) {
 
           {field("Fecha de Cambio", {
             style: styles.input,
-            value: fechaCambio,
-            onChangeText: setFechaCambio,
-            placeholder: "Ej. 2026-04-10 o 10/04/2026",
+            value: "Se asignará automáticamente",
+            editable: false,
+            placeholder: "Fecha automática",
           })}
         </ScrollView>
         <View style={styles.footer}>

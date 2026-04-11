@@ -23,6 +23,7 @@ export default function App() {
   const [hydrated, setHydrated] = useState(false);
   const [detailPart, setDetailPart] = useState(null);
   const [detailOpen, setDetailOpen] = useState(false);
+  const [editingPart, setEditingPart] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -52,7 +53,18 @@ export default function App() {
   const sortedParts = useMemo(() => sortPartsByDate(parts), [parts]);
 
   const handleSavePart = (payload) => {
-    setParts((prev) => [...prev, { id: uuidv4(), ...payload }]);
+    if (editingPart) {
+      // Modo edición: actualizar la pieza existente
+      setParts((prev) => prev.map((part) => 
+        part.id === editingPart.id 
+          ? { ...part, ...payload }
+          : part
+      ));
+      setEditingPart(null);
+    } else {
+      // Modo creación: agregar nueva pieza
+      setParts((prev) => [...prev, { id: uuidv4(), ...payload }]);
+    }
     setScreen('list');
   };
 
@@ -62,6 +74,20 @@ export default function App() {
       setDetailOpen(false);
       setDetailPart(null);
     }
+    if (editingPart?.id === id) {
+      setEditingPart(null);
+      setScreen('list');
+    }
+  };
+
+  const handleEdit = (part) => {
+    setEditingPart(part);
+    setScreen('register');
+  };
+
+  const handleCancelEdit = () => {
+    setEditingPart(null);
+    setScreen('list');
   };
 
   const openDetail = (part) => {
@@ -79,7 +105,9 @@ export default function App() {
       return (
         <RegisterScreen
           onSave={handleSavePart}
-          onCancel={() => setScreen('list')}
+          onCancel={handleCancelEdit}
+          editingPart={editingPart}
+          existingParts={parts}
         />
       );
     }
@@ -92,6 +120,7 @@ export default function App() {
             onAddPress={() => setScreen('register')}
             onOpenDetail={openDetail}
             onDelete={handleDelete}
+            onEdit={handleEdit}
           />
         );
       case 'statistics':
@@ -105,6 +134,7 @@ export default function App() {
             onAddPress={() => setScreen('register')}
             onOpenDetail={openDetail}
             onDelete={handleDelete}
+            onEdit={handleEdit}
           />
         );
     }

@@ -10,7 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { PartCard } from '../components/PartCard';
 import { colors } from '../theme';
 
-export function HomeScreen({ sortedParts, onAddPress, onOpenDetail, onDelete }) {
+export function HomeScreen({ sortedParts, onAddPress, onOpenDetail, onDelete, onEdit }) {
   const insets = useSafeAreaInsets();
 
   return (
@@ -45,9 +45,12 @@ export function HomeScreen({ sortedParts, onAddPress, onOpenDetail, onDelete }) 
               key={item.id}
               index={index}
               pieza={item.pieza}
+              marca={item.marca}
+              precio={item.precio}
               fechaCambio={item.fechaCambio}
               onOpenDetail={() => onOpenDetail(item)}
               onDelete={() => onDelete(item.id)}
+              onEdit={() => onEdit(item)}
             />
           ))}
         </ScrollView>
