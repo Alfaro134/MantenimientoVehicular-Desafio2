@@ -95,7 +95,7 @@ export default function App() {
           />
         );
       case 'statistics':
-        return <StatisticsScreen />;
+        return <StatisticsScreen parts={parts} />;
       case 'profile':
         return <ProfileScreen />;
       default:
@@ -140,6 +140,5 @@ const styles = StyleSheet.create({
   },
   layer: {
     flex: 1,
-    zIndex: 1,
   },
 });
