@@ -125,11 +125,14 @@ export function RegisterScreen({ onSave, onCancel, editingPart = null, existingP
           })}
 
           {field("Fecha de Cambio", {
-            style: styles.input,
-            value: "Se asignará automáticamente",
+            style: [styles.input, { color: colors.textMuted }],
+            value: editingPart?.fechaCambio || "",
             editable: false,
             placeholder: "Fecha automática",
           })}
+          <Text style={styles.helperText}>
+            La fecha se asignará automáticamente al momento de guardar
+          </Text>
         </ScrollView>
         <View style={styles.footer}>
           <Pressable
@@ -244,5 +247,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
     letterSpacing: 0.2,
+  },
+  helperText: {
+    color: colors.textMuted,
+    fontSize: 12,
+    fontStyle: "italic",
+    marginTop: 8,
+    marginBottom: 16,
+    textAlign: "center",
   },
 });
