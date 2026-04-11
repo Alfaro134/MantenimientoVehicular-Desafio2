@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.95)',
     borderTopWidth: 1,
     borderTopColor: colors.borderGlass,
+    zIndex: 10,
   },
   content: {
     flexDirection: 'row',
